@@ -1,15 +1,21 @@
 """Admin classes for the ``document_library`` app."""
+from cms import __version__ as cms_version
+from distutils.version import StrictVersion
 from django.contrib import admin
 from django.contrib.contenttypes.generic import GenericTabularInline
 from django.utils.translation import ugettext_lazy as _
 
-from cms.admin.placeholderadmin import PlaceholderAdmin
+if StrictVersion(cms_version) >= StrictVersion('3.1'):
+    from cms.admin.placeholderadmin import PlaceholderAdminMixin
+else:
+    from cms.admin.placeholderadmin import PlaceholderAdmin as \
+        PlaceholderAdminMixin
 from hvad.admin import TranslatableAdmin
 
 from .models import Attachment, Document, DocumentCategory
 
 
-class MulilingualModelAdmin(TranslatableAdmin, PlaceholderAdmin):
+class MulilingualModelAdmin(TranslatableAdmin, PlaceholderAdminMixin):
     pass
 
 
